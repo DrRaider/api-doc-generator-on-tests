@@ -30,11 +30,13 @@ Method | Description
   {%- for method, object in methods %}
 
   {%- if ( object.body or object.responses ) %}
+
 ### {{ method }}
 {{ object.description }}
   {%- endif %}
 
   {%- if object.body and object.body[0].type %}
+
 code | type | example
 -----|------|--------
     {%- for type, body in object.body %}
@@ -43,6 +45,7 @@ code | type | example
   {%- endif %}
 
   {%- if object.responses %}
+
 code | type | example
 -----|------|--------
     {%- for code, responses in object.responses %}
