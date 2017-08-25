@@ -1,0 +1,63 @@
+# {{ options.title }}
+
+{%- if options.versionAPI %}
+v{{ options.versionAPI }}
+{%- endif %}
+{%- if options.baseUri %}
+BaseUri :[{{ options.baseUri }}]({{ options.baseUri }})
+{%- endif %}
+
+{%- if types.length %}
+# Types
+
+Name | Description
+-----|------------
+{%- for name, object in types %}
+{{ name }} | {{ f.stringify(object, null, '  ', 6) | safe }}
+{%- endfor %}
+{%- endif %}
+
+# Methods
+
+{%- macro urlBlock(url, methods) %}
+## {{ f.updatePath(url) }}
+Method | Description
+-------|------------
+  {%- for method, object in methods %}
+{{ method }} | {{ object.description }}
+  {%- endfor %}
+
+  {%- for method, object in methods %}
+
+  {%- if ( object.body or object.responses ) %}
+### {{ method }}
+{{ object.description }}
+  {%- endif %}
+
+  {%- if object.body and object.body[0].type %}
+code | type | example
+-----|------|--------
+    {%- for type, body in object.body %}
+{{ type }} | {{ body.type }} | {{ f.regReplace( f.stringify(body.example, null, '  ', 1), '\n', '<br />', 'g' ) | safe }}
+    {%- endfor %}
+  {%- endif %}
+
+  {%- if object.responses %}
+code | type | example
+-----|------|--------
+    {%- for code, responses in object.responses %}
+{{ code }} |
+        {%- for type, example in responses -%}
+{{ type }} |
+{{- f.regReplace( f.stringify(example, null, '  ', 1), '\n', '<br />', 'g' ) | safe }}
+        {%- endfor %}
+    {%- endfor %}
+  {%- endif %}
+  {%- endfor %}
+{% endmacro %}
+
+{%- for u in url %}
+  {%- set m = methods[u] -%}
+  {{- urlBlock(u, m.data) | safe }}
+{%- endfor -%}
+
