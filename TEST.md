@@ -17,13 +17,13 @@ List all movies
 
 code | type | example
 -----|------|--------
-200 |application/json |{<br />  "1": {<br />    "name": "Shaun of the Dead",<br />    "year": 2004<br />  },<br />  "2": {<br />    "name": "Hot Fuzz",<br />    "year": 2007<br />  }<br />}
+200 |application/json |`{<br />  "1": {<br />    "name": "Shaun of the Dead",<br />    "year": 2004<br />  },<br />  "2": {<br />    "name": "Hot Fuzz",<br />    "year": 2007<br />  }<br />}`
 ### post
 Insert a new record in to movie collection
 
 code | type | example
 -----|------|--------
-201 |application/json |{<br />  "name": "Unknwn",<br />  "year": 2017<br />}
+201 |application/json |```{<br />  "name": "Unknwn",<br />  "year": 2017<br />}```
 
 ## /movies/{id}
 Method | Description
