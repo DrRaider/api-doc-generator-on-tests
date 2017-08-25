@@ -38,7 +38,7 @@ Method | Description
 code | type | example
 -----|------|--------
     {%- for type, body in object.body %}
-{{ type }} | {{ body.type }} | {{ f.regReplace( f.stringify(body.example, null, '  ', 1), '\n', '<br />', 'g' ) | safe }}
+{{ type }} | {{ body.type }} | {{ f.stringify(body.example) | safe }}
     {%- endfor %}
   {%- endif %}
 
@@ -48,8 +48,7 @@ code | type | example
     {%- for code, responses in object.responses %}
 {{ code }} |
         {%- for type, example in responses -%}
-{{ type }} |
-{{- f.regReplace( f.stringify(example, null, '  ', 1), '\n', '<br />', 'g' ) | safe }}
+{{ type }} | ```{{- f.stringify(example) | safe }}```
         {%- endfor %}
     {%- endfor %}
   {%- endif %}
