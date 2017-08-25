@@ -35,9 +35,11 @@ Method | Description
 {{ object.description }}
   {%- endif %}
 
-  {%- if object.body and object.body[0].type %}
+  {%- if object.body %}
 
-code | type | example
+*Body*
+
+type | body | example
 -----|------|--------
     {%- for type, body in object.body %}
 {{ type }} | {{ body.type }} | {{ f.regReplace( f.stringify(body.example), ',', ', ', 'g' ) | safe }}
@@ -45,6 +47,8 @@ code | type | example
   {%- endif %}
 
   {%- if object.responses %}
+
+*Responses*
 
 code | type | example
 -----|------|--------
@@ -62,4 +66,3 @@ code | type | example
   {%- set m = methods[u] -%}
   {{- urlBlock(u, m.data) | safe }}
 {%- endfor -%}
-
