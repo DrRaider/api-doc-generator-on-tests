@@ -18,14 +18,14 @@ List all movies
 
 code | type | example
 -----|------|--------
-200 |application/json | ```{"1":{"name":"Shaun of the Dead","year":2004},"2":{"name":"Hot Fuzz","year":2007}}```
+200 |application/json | ```{"1":{"name":"Shaun of the Dead", "year":2004}, "2":{"name":"Hot Fuzz", "year":2007}}```
 
 ### post
 Insert a new record in to movie collection
 
 code | type | example
 -----|------|--------
-201 |application/json | ```{"name":"Unknwn","year":2017}```
+201 |application/json | ```{"name":"Unknwn", "year":2017}```
 
 ## /movies/{id}
 Method | Description
@@ -38,7 +38,7 @@ Get movie with ID {id}
 
 code | type | example
 -----|------|--------
-200 |application/json | ```{"name":"Shaun of the Dead","year":2004}```
+200 |application/json | ```{"name":"Shaun of the Dead", "year":2004}```
 
 ### delete
 Delete movie with ID {id}

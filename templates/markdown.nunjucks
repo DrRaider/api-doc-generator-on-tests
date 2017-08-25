@@ -40,7 +40,7 @@ Method | Description
 code | type | example
 -----|------|--------
     {%- for type, body in object.body %}
-{{ type }} | {{ body.type }} | {{ f.stringify(body.example) | safe }}
+{{ type }} | {{ body.type }} | {{ f.regReplace( f.stringify(body.example), ',', ', ', 'g' ) | safe }}
     {%- endfor %}
   {%- endif %}
 
@@ -51,7 +51,7 @@ code | type | example
     {%- for code, responses in object.responses %}
 {{ code }} |
         {%- for type, example in responses -%}
-{{ type }} | ```{{- f.stringify(example) | safe }}```
+{{ type }} | ```{{- f.regReplace( f.stringify(example), ',', ', ', 'g' ) | safe }}```
         {%- endfor %}
     {%- endfor %}
   {%- endif %}
