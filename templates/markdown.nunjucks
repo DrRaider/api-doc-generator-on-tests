@@ -37,7 +37,7 @@ Method | Description
 
   {%- if object.body %}
 
-*Body*
+**Body**
 
 type | body | example
 -----|------|--------
@@ -48,7 +48,7 @@ type | body | example
 
   {%- if object.responses %}
 
-*Responses*
+**Responses**
 
 code | type | example
 -----|------|--------

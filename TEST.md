@@ -16,7 +16,7 @@ post | Insert a new record in to movie collection
 ### get
 List all movies
 
-*Responses*
+**Responses**
 
 code | type | example
 -----|------|--------
@@ -25,13 +25,13 @@ code | type | example
 ### post
 Insert a new record in to movie collection
 
-*Body*
+**Body**
 
 type | body | example
 -----|------|--------
 application/json |  | {"name":"Unknwn", "year":2017}
 
-*Responses*
+**Responses**
 
 code | type | example
 -----|------|--------
@@ -46,7 +46,7 @@ delete | Delete movie with ID {id}
 ### get
 Get movie with ID {id}
 
-*Responses*
+**Responses**
 
 code | type | example
 -----|------|--------
@@ -56,7 +56,7 @@ code | type | example
 ### delete
 Delete movie with ID {id}
 
-*Responses*
+**Responses**
 
 code | type | example
 -----|------|--------
@@ -71,7 +71,7 @@ get | List of actors that movie ID {id} owns
 ### get
 List of actors that movie ID {id} owns
 
-*Responses*
+**Responses**
 
 code | type | example
 -----|------|--------
