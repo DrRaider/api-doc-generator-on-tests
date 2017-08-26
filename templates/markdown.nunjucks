@@ -1,19 +1,21 @@
 # {{ options.title }}
 
-{%- if options.versionAPI %}
-v{{ options.versionAPI }}
+{%- if options.version %}
+
+v{{ options.version }}
 {%- endif %}
 {%- if options.baseUri %}
-BaseUri :[{{ options.baseUri }}]({{ options.baseUri }})
+
+BaseUri: [{{ options.baseUri }}]({{ options.baseUri }})
 {%- endif %}
 
-{%- if types.length %}
+{%- if types %}
+
 # Types
 
-Name | Description
------|------------
 {%- for name, object in types %}
-{{ name }} | {{ f.stringify(object, null, '  ', 6) | safe }}
+## <a name="types.{{ name }}"></a>{{ name }}
+```{{ f.regReplace( f.stringify(object), ',', ', ', 'g' ) | safe }}```
 {%- endfor %}
 {%- endif %}
 
@@ -42,7 +44,7 @@ Method | Description
 type | body | example
 -----|------|--------
     {%- for type, body in object.body %}
-{{ type }} | {{ body.type }} | {{ f.regReplace( f.stringify(body.example), ',', ', ', 'g' ) | safe }}
+{{ type }} | [{{ body.type }}](#types.{{ body.type }}) | {{ f.regReplace( f.stringify(body.example), ',', ', ', 'g' ) | safe }}
     {%- endfor %}
   {%- endif %}
 
