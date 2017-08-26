@@ -7,7 +7,8 @@ BaseUri: [http://localhost:3000](http://localhost:3000)
 # Types
 ## <a name="types.books"></a>books
 
-```     {
+```
+     {
        "name": {
          "type": "string",
          "required": true
@@ -23,7 +24,8 @@ BaseUri: [http://localhost:3000](http://localhost:3000)
            "type": "email"
          }
        }
-     }```
+     }
+```
 
 # Methods
 ## /books

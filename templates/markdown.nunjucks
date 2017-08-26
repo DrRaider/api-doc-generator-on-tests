@@ -16,7 +16,9 @@ BaseUri: [{{ options.baseUri }}]({{ options.baseUri }})
 {%- for name, object in types %}
 ## <a name="types.{{ name }}"></a>{{ name }}
 
-```{{ f.stringify(object, null, '  ', 6) | safe }}```
+```
+{{ f.stringify(object, null, '  ', 6) | safe }}
+```
 {%- endfor %}
 {%- endif %}
 
