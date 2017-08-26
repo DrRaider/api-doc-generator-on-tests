@@ -74,7 +74,7 @@ describe('testing with no validators', function () {
           var md2 = new Markdown({ templateFileName : './test/not_exists.nunjucks' });
           md2.generate(function (err, mdText) {
             (err instanceof Error).should.equal(true);
-            err.toString().should.eql("Error: ENOENT: no such file or directory, open './test/not_exists.nunjucks'");
+            err.toString().should.match(/Error: ENOENT: no such file or directory/);
             done();
           });
         });

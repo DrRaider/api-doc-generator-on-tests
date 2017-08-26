@@ -12,7 +12,7 @@
 
 ### Create API documentation from object or Express.js application
 
- v1.0.1
+ v1.0.2
 
 
 ## Installation
