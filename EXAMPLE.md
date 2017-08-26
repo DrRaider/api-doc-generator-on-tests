@@ -3,9 +3,27 @@
 v3.1.0
 
 BaseUri: [http://localhost:3000](http://localhost:3000)
+
 # Types
 ## <a name="types.books"></a>books
-```{"name":{"type":"string", "required":true}, "numberOfPages":{"type":"integer"}, "author":{"name":{"type":"string"}, "email":{"type":"email"}}}```
+
+```     {
+       "name": {
+         "type": "string",
+         "required": true
+       },
+       "numberOfPages": {
+         "type": "integer"
+       },
+       "author": {
+         "name": {
+           "type": "string"
+         },
+         "email": {
+           "type": "email"
+         }
+       }
+     }```
 
 # Methods
 ## /books
@@ -81,4 +99,3 @@ code | type | example
 -----|------|--------
 200 |application/json | ```[{"_id":343, "name":"Mike"}, {"_id":324, "name":"John"}]```
 404 |application/json | ```{"code":"121", "message":"Readers not found"}```
-
