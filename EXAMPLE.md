@@ -30,9 +30,9 @@ BaseUri: [http://localhost:3000](http://localhost:3000)
 # Methods
 
 ## Brief
- - [methods.books](books)
- - [methods.books/:bookId](books/:bookId)
- - [methods.books/:bookId/readers](books/:bookId/readers)
+ - [books](#methods.books)
+ - [books/:bookId](#methods.books/:bookId)
+ - [books/:bookId/readers](#methods.books/:bookId/readers)
 
 ## <a name="methods.books"></a> /books
 Method | Description

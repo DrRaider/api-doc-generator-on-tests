@@ -27,7 +27,7 @@ BaseUri: [{{ options.baseUri }}]({{ options.baseUri }})
 ## Brief
 
 {%- for u in url %}
- - [methods.{{ u }}]({{ u }})
+ - [{{ u }}](#methods.{{ u }})
 {%- endfor -%}
 
 {%- macro urlBlock(url, methods) %}
