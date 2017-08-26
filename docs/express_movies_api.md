@@ -4,7 +4,7 @@
 
 ## Movies database API example ( GET, POST, DELETE methods; RAM data storage )
 
-Result example as html: [Movies Database API documentation](http://express2md.simpleness.org/express_movies_api.html)
+Result example as html: [Movies Database API documentation](express_movies_api_result.md)
 
 
 ### Install modules
