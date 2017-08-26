@@ -5,7 +5,7 @@ v3.1.0
 BaseUri: [http://localhost:3000](http://localhost:3000)
 
 # Types
-## <a name="types.books"></a>books
+## <a name="types.books"></a> books
 
 ```
      {
@@ -28,7 +28,13 @@ BaseUri: [http://localhost:3000](http://localhost:3000)
 ```
 
 # Methods
-## /books
+
+## Brief
+ - [methods.books](books)
+ - [methods.books/:bookId](books/:bookId)
+ - [methods.books/:bookId/readers](books/:bookId/readers)
+
+## <a name="methods.books"></a> /books
 Method | Description
 -------|------------
 get | Get information about all books
@@ -60,7 +66,8 @@ code | type | example
 201 |application/json | ```{"name":"one", "author":{"name":"Art"}}```
 400 |application/json | ```{"code":"221", "message":"name not matched with string type"}```
 
-## /books/{bookId}
+
+## <a name="methods.books/:bookId"></a> /books/{bookId}
 Method | Description
 -------|------------
 get | Get information about {bookId} book
@@ -87,7 +94,8 @@ code | type | example
 400 |application/json | ```{"code":"221", "message":"name not matched with string type"}```
 404 |application/json | ```{"code":"121", "message":"Book not found"}```
 
-## /books/{bookId}/readers
+
+## <a name="methods.books/:bookId/readers"></a> /books/{bookId}/readers
 Method | Description
 -------|------------
 get | Get information about who has read {bookId} book
@@ -101,3 +109,4 @@ code | type | example
 -----|------|--------
 200 |application/json | ```[{"_id":343, "name":"Mike"}, {"_id":324, "name":"John"}]```
 404 |application/json | ```{"code":"121", "message":"Readers not found"}```
+

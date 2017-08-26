@@ -14,7 +14,7 @@ BaseUri: [{{ options.baseUri }}]({{ options.baseUri }})
 # Types
 
 {%- for name, object in types %}
-## <a name="types.{{ name }}"></a>{{ name }}
+## <a name="types.{{ name }}"></a> {{ name }}
 
 ```
 {{ f.stringify(object, null, '  ', 6) | safe }}
@@ -24,8 +24,15 @@ BaseUri: [{{ options.baseUri }}]({{ options.baseUri }})
 
 # Methods
 
+## Brief
+
+{%- for u in url %}
+ - [methods.{{ u }}]({{ u }})
+{%- endfor -%}
+
 {%- macro urlBlock(url, methods) %}
-## {{ f.updatePath(url) }}
+
+## <a name="methods.{{ url }}"></a> {{ f.updatePath(url) }}
 Method | Description
 -------|------------
   {%- for method, object in methods %}
