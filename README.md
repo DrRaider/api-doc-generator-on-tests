@@ -64,7 +64,7 @@ app.listen(3000, function () { console.log('Example app listening on port 3000!'
 
 ### Result
 
-```
+<pre>
 # Methods
 
 ## Brief
@@ -123,12 +123,12 @@ md.methods('books', 'get', {
 md.generate(function (err, mdText) {
   console.log(mdText);
 });
-```
+</pre>
 
 
 ### Result
 
-```
+<pre>
 # Testing
 v3.1.0
 
@@ -169,7 +169,7 @@ code | type | example
 -----|------|--------
 200 |application/json | ```[{"name":"one", "author":{"name":"Art"}}]```
 404 |application/json | ```{"code":"120", "message":"Books not found"}```
-```
+</pre>
 
 ## Options parameters
 
