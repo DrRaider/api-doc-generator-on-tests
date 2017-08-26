@@ -1,15 +1,17 @@
+{%- if options.title %}
 # {{ options.title }}
+{%- endif %}
 
 {%- if options.version %}
-
 v{{ options.version }}
 {%- endif %}
+
 {%- if options.baseUri %}
 
 BaseUri: [{{ options.baseUri }}]({{ options.baseUri }})
 {%- endif %}
 
-{%- if types %}
+{%- if types and f.stringify(types) != '{}' %}
 
 # Types
 
@@ -29,7 +31,11 @@ BaseUri: [{{ options.baseUri }}]({{ options.baseUri }})
 {%- for u in url %}
  - [/{{ u }}](#methods.{{ u }})
 {%- for method, object in methods[u].data %}
+{%- if object.body or object.responses %}
    - [{{ method }}](#methods.{{ u }}.{{ method }})
+{%- else %}
+   - {{ method }}
+{%- endif %}
 
 {%- endfor -%}
 {%- endfor -%}
