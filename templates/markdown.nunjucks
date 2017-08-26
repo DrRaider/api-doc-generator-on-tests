@@ -27,7 +27,11 @@ BaseUri: [{{ options.baseUri }}]({{ options.baseUri }})
 ## Brief
 
 {%- for u in url %}
- - [{{ u }}](#methods.{{ u }})
+ - [/{{ u }}](#methods.{{ u }})
+{%- for method, object in methods[u].data %}
+   - [{{ method }}](#methods.{{ u }}.{{ method }})
+
+{%- endfor -%}
 {%- endfor -%}
 
 {%- macro urlBlock(url, methods) %}
@@ -43,7 +47,7 @@ Method | Description
 
   {%- if ( object.body or object.responses ) %}
 
-### {{ method }}
+### <a name="methods.{{ url }}.{{ method }}"></a> {{ method }}
 {{ object.description }}
   {%- endif %}
 

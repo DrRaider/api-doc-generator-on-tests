@@ -30,9 +30,14 @@ BaseUri: [http://localhost:3000](http://localhost:3000)
 # Methods
 
 ## Brief
- - [books](#methods.books)
- - [books/:bookId](#methods.books/:bookId)
- - [books/:bookId/readers](#methods.books/:bookId/readers)
+ - [/books](#methods.books)
+   - [get](#methods.books.get)
+   - [post](#methods.books.post)
+ - [/books/:bookId](#methods.books/:bookId)
+   - [get](#methods.books/:bookId.get)
+   - [delete](#methods.books/:bookId.delete)
+ - [/books/:bookId/readers](#methods.books/:bookId/readers)
+   - [get](#methods.books/:bookId/readers.get)
 
 ## <a name="methods.books"></a> /books
 Method | Description
@@ -40,7 +45,7 @@ Method | Description
 get | Get information about all books
 post | Add new book
 
-### get
+### <a name="methods.books.get"></a> get
 Get information about all books
 
 **Responses**
@@ -50,7 +55,7 @@ code | type | example
 200 |application/json | ```[{"name":"one", "author":{"name":"Art"}}]```
 404 |application/json | ```{"code":"120", "message":"Books not found"}```
 
-### post
+### <a name="methods.books.post"></a> post
 Add new book
 
 **Body**
@@ -73,7 +78,7 @@ Method | Description
 get | Get information about {bookId} book
 delete | Delete {bookId} book
 
-### get
+### <a name="methods.books/:bookId.get"></a> get
 Get information about {bookId} book
 
 **Responses**
@@ -83,7 +88,7 @@ code | type | example
 200 |application/json | ```{"_id":123, "name":"one", "author":{"name":"Art"}}```
 404 |application/json | ```{"code":"121", "message":"Book not found"}```
 
-### delete
+### <a name="methods.books/:bookId.delete"></a> delete
 Delete {bookId} book
 
 **Responses**
@@ -100,7 +105,7 @@ Method | Description
 -------|------------
 get | Get information about who has read {bookId} book
 
-### get
+### <a name="methods.books/:bookId/readers.get"></a> get
 Get information about who has read {bookId} book
 
 **Responses**
