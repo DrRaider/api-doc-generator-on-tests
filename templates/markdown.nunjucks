@@ -29,7 +29,7 @@ BaseUri: [{{ options.baseUri }}]({{ options.baseUri }})
 ## Brief
 
 {%- for u in url %}
- - [/{{ u }}](#methods.{{ u }})
+ - [{{ u }}](#methods.{{ u }})
 {%- for method, object in methods[u].data %}
 {%- if object.body or object.responses %}
    - [{{ method }}](#methods.{{ u }}.{{ method }})
