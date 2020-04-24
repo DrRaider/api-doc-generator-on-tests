@@ -11,6 +11,7 @@ var nunjucks = require('nunjucks');
 exports = module.exports = function (options) {
   var typesData = {};
   var methodsData = {};
+  var called = {};
 
   if (undef(options)) options = {};
   var templateFile = 'markdown.nunjucks';
@@ -45,7 +46,6 @@ exports = module.exports = function (options) {
   };
 
   exp.express = function (req, res) {
-    this.checkMethodsData();
     this.generate(function (err, data) {
       res.send(data);
     });
@@ -57,9 +57,11 @@ exports = module.exports = function (options) {
 
     res.end = function (c) {
       resEnd.apply(res, arguments);
-      if (options.storeResponses && req.route && req.route.path !== apiPath)
+      if (options.storeResponses && req.route && req.route.path !== apiPath && res.statusCode !== 404) {
         methodsData[req.route.path] =
           updateMethodsData(methodsData[req.route.path], req, res, c, options);
+        called[req.route.path] = methodsData[req.route.path];
+      }
     };
 
     next();
@@ -73,8 +75,8 @@ exports = module.exports = function (options) {
         var view = {
           options: options,
           types: typesData,
-          url: Object.keys(methodsData).sort(),
-          methods: getMethodsTree(methodsData),
+          url: Object.keys(called).sort(),
+          methods: getMethodsTree(called),
           f: additional(),
         };
         cb(null, nunjucks.renderString(template.toString(), view));
@@ -181,16 +183,23 @@ function updateMethodsData(methodsPath, req, res, chunk, options) {
     }
   }
 
-  if (res._headers['content-type']) {
-    var resCType = res._headers['content-type'].match(/([^;]*(application|text)[^;]*)/);
+  if (res.hasHeader('content-type')) {  
+    var resCType = res.getHeader('content-type').match(/([^;]*(application|text)[^;]*)/);
     if (resCType && resCType[1]) {
-      var result = chunk.toString();
+      var result;
+      if (undef(chunk)) result = { file: 'file from a stream (no json response)'};
+      else result = chunk.toString();
       if (resCType[1] === 'application/json') result = JSON.parse(result);
       if (undef(m.responses)) m.responses = {};
       if (undef(m.responses[res.statusCode])) m.responses[res.statusCode] = {};
       if (undef(m.responses[res.statusCode][resCType[1]]))
         m.responses[res.statusCode][resCType[1]] = result;
     }
+  } else if (res.statusCode === 204) {
+    if (undef(m.responses)) m.responses = {};
+      if (undef(m.responses[res.statusCode])) m.responses[res.statusCode] = {};
+      if (undef(m.responses[res.statusCode]['empty-response']))
+        m.responses[res.statusCode]['empty-response'] = null;
   }
 
   return methodsPath;
