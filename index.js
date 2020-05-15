@@ -7,6 +7,7 @@
 var fs = require('fs');
 var path = require('path');
 var nunjucks = require('nunjucks');
+var moment = require('moment');
 
 exports = module.exports = function (options) {
   var typesData = {};
@@ -178,7 +179,9 @@ function updateMethodsData(methodsPath, req, res, chunk, options) {
       if (undef(m.body)) m.body = {};
       if (undef(m.body[reqCType[1]]))
         m.body[reqCType[1]] = {
-          example: req.body,
+          example: req.body
+            .replaceAll(/\d{10}/g, '[:date]')
+            .replaceAll(/[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}/, '[:uuid]')
         };
     }
   }
@@ -193,7 +196,9 @@ function updateMethodsData(methodsPath, req, res, chunk, options) {
       if (undef(m.responses)) m.responses = {};
       if (undef(m.responses[res.statusCode])) m.responses[res.statusCode] = {};
       if (undef(m.responses[res.statusCode][resCType[1]]))
-        m.responses[res.statusCode][resCType[1]] = result;
+        m.responses[res.statusCode][resCType[1]] = result
+          .replaceAll(/\d{10}/g, '[:date]')
+          .replaceAll(/[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}/, '[:uuid]');
     }
   } else if (res.statusCode === 204) {
     if (undef(m.responses)) m.responses = {};
