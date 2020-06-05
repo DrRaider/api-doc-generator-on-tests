@@ -35,7 +35,7 @@
     "node-mocks-http": "^1.6.1"
   },
   "dependencies": {
-    "moment": "^2.25.3",
+    "node-jsencrypt": "^1.0.0",
     "nunjucks": "^3.0.0"
   }
 }

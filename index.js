@@ -7,7 +7,43 @@
 var fs = require('fs');
 var path = require('path');
 var nunjucks = require('nunjucks');
-var moment = require('moment');
+const JSEncrypt = require('node-jsencrypt');
+
+const dataDecryptor = new DataDecryptor();
+
+function DataDecryptor() {
+  const jsEncrypt = new JSEncrypt();
+
+  const rsaPrivateKey = Buffer.from(process.env.RSA_PRIVATE_KEY, 'base64').toString();
+  jsEncrypt.setPrivateKey(rsaPrivateKey);
+
+  this.decrypt = (data) => jsEncrypt.decrypt(data);
+}
+
+const iterate = (obj) => {
+  Object.keys(obj).forEach(key => {
+    if (obj[key] && typeof obj[key] === 'object') {
+      obj[key] = iterate(obj[key]);
+    }
+    if (obj[key] && typeof obj[key] === 'string') {
+      if (key === 'secret_key' || key === 'secrets' || key === 'secret' || key === 'token') {
+        obj[key] = `[:${key}]`;
+      } else {
+        obj[key] = dataDecryptor.decrypt(obj[key]) || obj[key];
+      }
+    }
+  });
+
+  return obj;
+}
+
+function standardize(body) {
+  return JSON.parse(
+    JSON.stringify(iterate(body))
+      .replace(/\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d(?:\.\d+)?Z?/gm, '[:date]')
+      .replace(/[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}/g, '[:uuid]')
+  );
+};
 
 exports = module.exports = function (options) {
   var typesData = {};
@@ -177,12 +213,11 @@ function updateMethodsData(methodsPath, req, res, chunk, options) {
     var reqCType = req.headers['content-type'].match(/([^;]*(application|text)[^;]*)/);
     if (reqCType && reqCType[1]) {
       if (undef(m.body)) m.body = {};
-      if (undef(m.body[reqCType[1]]))
+      if (undef(m.body[reqCType[1]])) {
         m.body[reqCType[1]] = {
-          example: req.body
-            .replaceAll(/\d{10}/g, '[:date]')
-            .replaceAll(/[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}/, '[:uuid]')
+          example: standardize(req.body),
         };
+      }
     }
   }
 
@@ -190,15 +225,15 @@ function updateMethodsData(methodsPath, req, res, chunk, options) {
     var resCType = res.getHeader('content-type').match(/([^;]*(application|text)[^;]*)/);
     if (resCType && resCType[1]) {
       var result;
-      if (undef(chunk)) result = { file: 'file from a stream (no json response)'};
+      if (undef(chunk)) result = {file: 'file from a stream (no json response)'};
       else result = chunk.toString();
-      if (resCType[1] === 'application/json') result = JSON.parse(result);
       if (undef(m.responses)) m.responses = {};
       if (undef(m.responses[res.statusCode])) m.responses[res.statusCode] = {};
-      if (undef(m.responses[res.statusCode][resCType[1]]))
-        m.responses[res.statusCode][resCType[1]] = result
-          .replaceAll(/\d{10}/g, '[:date]')
-          .replaceAll(/[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}/, '[:uuid]');
+      if (undef(m.responses[res.statusCode][resCType[1]])) {
+        if (resCType[1] === 'application/json') result = standardize(JSON.parse(result));
+        console.log(resCType[1], result)
+        m.responses[res.statusCode][resCType[1]] = result;
+      }
     }
   } else if (res.statusCode === 204) {
     if (undef(m.responses)) m.responses = {};
