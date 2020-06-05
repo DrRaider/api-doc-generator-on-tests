@@ -231,7 +231,6 @@ function updateMethodsData(methodsPath, req, res, chunk, options) {
       if (undef(m.responses[res.statusCode])) m.responses[res.statusCode] = {};
       if (undef(m.responses[res.statusCode][resCType[1]])) {
         if (resCType[1] === 'application/json') result = standardize(JSON.parse(result));
-        console.log(resCType[1], result)
         m.responses[res.statusCode][resCType[1]] = result;
       }
     }
