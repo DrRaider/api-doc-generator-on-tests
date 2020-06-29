@@ -9,8 +9,6 @@ var path = require('path');
 var nunjucks = require('nunjucks');
 const JSEncrypt = require('node-jsencrypt');
 
-const dataDecryptor = new DataDecryptor();
-
 function DataDecryptor() {
   const jsEncrypt = new JSEncrypt();
 
@@ -20,13 +18,26 @@ function DataDecryptor() {
   this.decrypt = (data) => jsEncrypt.decrypt(data);
 }
 
+const dataDecryptor = new DataDecryptor();
+
 const iterate = (obj) => {
   Object.keys(obj).forEach(key => {
     if (obj[key] && typeof obj[key] === 'object') {
       obj[key] = iterate(obj[key]);
     }
     if (obj[key] && typeof obj[key] === 'string') {
-      if (key === 'secret_key' || key === 'secrets' || key === 'secret' || key === 'token') {
+      if ([
+          'secret_key',
+          'secrets',
+          'secret',
+          'token',
+          'secretKey',
+          'template_url',
+          'component_url',
+          'policy',
+          'signature',
+          ].includes(key)
+        ) {
         obj[key] = `[:${key}]`;
       } else {
         obj[key] = dataDecryptor.decrypt(obj[key]) || obj[key];
@@ -274,4 +285,3 @@ function guessDescription( method, path, guess ) {
   }
   return result || defaultResult;
 }
-
