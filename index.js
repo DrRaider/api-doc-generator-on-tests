@@ -183,11 +183,8 @@ function updateMethodsData(methodsPath, req, res, chunk, options) {
     const resCType = res.getHeader('content-type').match(/([^;]*(application|text)[^;]*)/);
     if (resCType && resCType[1]) {
       let result;
-      if (undef(chunk)) {
-        result = resCType[1] === 'application/json' ?
-          JSON.stringify({ file: 'file from a stream (no json response)' })
-          : { file: 'file from a stream (no json response)' };
-      } else result = chunk.toString();
+      if (undef(chunk)) result = { file: 'file from a stream (no json response)' };
+      else result = chunk.toString();
       if (undef(m.responses)) m.responses = {};
       if (undef(m.responses[res.statusCode])) m.responses[res.statusCode] = {};
       if (undef(m.responses[res.statusCode][resCType[1]])) {
