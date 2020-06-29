@@ -1,0 +1,53 @@
+{
+  "root": true,
+  "extends": [
+    "airbnb-base",
+    "plugin:sonarjs/recommended"
+  ],
+  "plugins": [
+    "sonarjs"
+  ],
+  "env": {
+    "node": true
+  },
+  "rules": {
+    "arrow-body-style": 0,
+    "implicit-arrow-linebreak": 0,
+    "no-console": 0,
+    "no-multiple-empty-lines": [
+      "error",
+      {
+        "max": 1,
+        "maxBOF": 0,
+        "maxEOF": 0
+      }
+    ],
+    "no-param-reassign": 0,
+    "no-underscore-dangle": 0,
+    "operator-linebreak": 0,
+    "prefer-destructuring": ["error", {
+      "VariableDeclarator": {
+        "array": false,
+        "object": true
+      },
+      "AssignmentExpression": {
+        "array": false,
+        "object": false
+      }
+    }, {
+      "enforceForRenamedProperties": false
+    }],
+    "sonarjs/cognitive-complexity": "error",
+    "sonarjs/no-collapsible-if": 0,
+    "sonarjs/no-duplicate-string": 0,
+    "sonarjs/no-extra-arguments": 0,
+    "sonarjs/no-identical-expressions": 0,
+    "sonarjs/no-identical-functions": 0,
+    "sonarjs/no-same-line-conditional": 0,
+    "sonarjs/no-unused-collection": 0,
+    "sonarjs/prefer-immediate-return": 0
+  },
+  "parserOptions": {
+    "ecmaVersion": 2018
+  }
+}
