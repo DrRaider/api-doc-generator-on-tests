@@ -1,96 +1,28 @@
-const express = require('express');
 const httpMocks = require('node-mocks-http');
+const { EventEmitter } = require('events');
 const Markdown = require('..');
 
 describe('testing express', () => {
-  describe('check generated md', () => {
-    const app = {
-      _router: {
-        stack: [
-          undefined,
-          { },
-          { route: { path: 'no_methods' } },
-          { route: { methods: 'not_object' } },
-          { route: { methods: { no_path: true } } },
-          { route: { path: '/aaa', methods: { get: true } } },
-          { route: { path: '/aaa', methods: { post: true } } },
-          { route: { path: '/aaa/:idAaa', methods: { get: true } } },
-          { route: { path: '/bbb', methods: { get: true } } },
-        ],
-      },
-    };
-    app.use = function () {};
-    app.get = function () {};
-
-    beforeEach(function () {
-      this.md = new Markdown({ express: app, storeResponses: true });
-    });
-
-    afterEach(function () {
-      this.md = null;
-    });
-
-    it('app is undefined', function (done) {
-      this.md.express({}, {
-        send(data) {
-          data.should.match(/# Methods/m);
-          data.should.match(/\/aaa/m);
-          data.should.match(/\/bbb/m);
-          data.should.match(/\/aaa\/:idAaa/);
-          done();
-        },
-      });
-    });
-  });
-
   [undefined, { _router: undefined }, { _router: { stack: undefined } }].forEach((app) => {
     describe('check various empties app', () => {
-      beforeEach(function () {
-        if (app) app.use = function () {};
-        if (app) app.get = function () {};
+      beforeEach(() => {
+        if (app) app.use = () => {};
+        if (app) app.get = () => {};
         this.md = new Markdown({ express: app, storeResponses: true });
       });
 
-      afterEach(function () {
+      afterEach(() => {
         this.md = null;
       });
 
-      it('app is undefined', function (done) {
+      it('app is undefined', (done) => {
         this.md.express({}, {
           send(data) {
-            data.should.match(/^# Methods/m);
-            data.should.match(/^## Brief/m);
+            expect(data).toMatch(/^# Methods/m);
+            expect(data).toMatch(/^## Brief/m);
             done();
           },
         });
-      });
-    });
-  });
-
-  describe('express workflow', () => {
-    beforeEach(function () {
-      this.app = express();
-      this.app.get('/b', (req, res) => { res.send('b1:'); });
-      this.app.post('/b', (req, res) => { res.send('b2:'); });
-      this.app.get('/b/:id', (req, res) => { res.send(`b3:${req.params.id}`); });
-      this.app.delete('/b/:id', (req, res) => { res.send(`b4:${req.params.id}`); });
-
-      this.md = new Markdown({ express: this.app, storeResponses: true, guessAll: true });
-      this.app.get('/api.md', this.md.express.bind(this.md));
-    });
-
-    afterEach(function () {
-      this.md = null;
-      this.app = null;
-    });
-
-    it('typical usage', function (done) {
-      this.md.express({}, {
-        send(data) {
-          data.should.match(/\[\/\/api.md\]\(#methods.\/api.md\)/m);
-          data.should.match(/post \| Insert a new record in to b collection/m);
-          done();
-        },
       });
     });
   });
@@ -106,8 +38,8 @@ describe('with httpMocks no guessAll', () => {
       ],
     },
   };
-  app.use = function () {};
-  app.get = function () {};
+  app.use = () => {};
+  app.get = () => {};
 
   const md = new Markdown({ express: app, storeResponses: true });
   let request = {};
@@ -115,12 +47,12 @@ describe('with httpMocks no guessAll', () => {
 
   beforeEach((done) => {
     response = httpMocks.createResponse({
-      eventEmitter: require('events').EventEmitter,
+      eventEmitter: EventEmitter,
     });
     done();
   });
 
-  it('post /aaa', function (done) {
+  it('post /aaa', (done) => {
     request = httpMocks.createRequest({
       method: 'POST',
       url: '/aaa',
@@ -149,14 +81,13 @@ describe('with httpMocks no guessAll', () => {
       done();
     });
 
-    const _this = this;
-    md.storeResponses(request, response, (error) => {
-      md.express(request, response, (error) => {
+    md.storeResponses(request, response, () => {
+      md.express(request, response, () => {
       });
     });
   });
 
-  it('post /aaa again', function (done) {
+  it('post /aaa again', (done) => {
     request = httpMocks.createRequest({
       method: 'POST',
       url: '/aaa',
@@ -185,9 +116,8 @@ describe('with httpMocks no guessAll', () => {
       done();
     });
 
-    const _this = this;
-    md.storeResponses(request, response, (error) => {
-      md.express(request, response, (error) => {
+    md.storeResponses(request, response, () => {
+      md.express(request, response, () => {
       });
     });
   });
@@ -203,8 +133,8 @@ describe('with httpMocks', () => {
       ],
     },
   };
-  app.use = function () {};
-  app.get = function () {};
+  app.use = () => {};
+  app.get = () => {};
 
   const md = new Markdown({ express: app, storeResponses: true, guessAll: true });
   let request = {};
@@ -212,12 +142,12 @@ describe('with httpMocks', () => {
 
   beforeEach((done) => {
     response = httpMocks.createResponse({
-      eventEmitter: require('events').EventEmitter,
+      eventEmitter: EventEmitter,
     });
     done();
   });
 
-  it('get /aaa/1/bbb', function (done) {
+  it('get /aaa/1/bbb', (done) => {
     request = httpMocks.createRequest({
       method: 'GET',
       url: '/aaa/1/bbb',
@@ -237,14 +167,13 @@ describe('with httpMocks', () => {
       done();
     });
 
-    const _this = this;
-    md.storeResponses(request, response, (error) => {
-      md.express(request, response, (error) => {
+    md.storeResponses(request, response, () => {
+      md.express(request, response, () => {
       });
     });
   });
 
-  it('post /aaa', function (done) {
+  it('post /aaa', (done) => {
     request = httpMocks.createRequest({
       method: 'POST',
       url: '/aaa',
@@ -273,14 +202,13 @@ describe('with httpMocks', () => {
       done();
     });
 
-    const _this = this;
-    md.storeResponses(request, response, (error) => {
-      md.express(request, response, (error) => {
+    md.storeResponses(request, response, () => {
+      md.express(request, response, () => {
       });
     });
   });
 
-  it('post /aaa again', function (done) {
+  it('post /aaa again', (done) => {
     request = httpMocks.createRequest({
       method: 'POST',
       url: '/aaa',
@@ -309,14 +237,13 @@ describe('with httpMocks', () => {
       done();
     });
 
-    const _this = this;
-    md.storeResponses(request, response, (error) => {
-      md.express(request, response, (error) => {
+    md.storeResponses(request, response, () => {
+      md.express(request, response, () => {
       });
     });
   });
 
-  it('post /aaa again', function (done) {
+  it('post /aaa again', (done) => {
     request = httpMocks.createRequest({
       method: 'POST',
       url: '/aaa',
@@ -345,14 +272,13 @@ describe('with httpMocks', () => {
       done();
     });
 
-    const _this = this;
-    md.storeResponses(request, response, (error) => {
-      md.express(request, response, (error) => {
+    md.storeResponses(request, response, () => {
+      md.express(request, response, () => {
       });
     });
   });
 
-  it('post /aaa unknown content type', function (done) {
+  it('post /aaa unknown content type', (done) => {
     request = httpMocks.createRequest({
       method: 'POST',
       url: '/aaa',
@@ -381,14 +307,13 @@ describe('with httpMocks', () => {
       done();
     });
 
-    const _this = this;
-    md.storeResponses(request, response, (error) => {
-      md.express(request, response, (error) => {
+    md.storeResponses(request, response, () => {
+      md.express(request, response, () => {
       });
     });
   });
 
-  it('delete /aaa/123', function (done) {
+  it('delete /aaa/123', (done) => {
     request = httpMocks.createRequest({
       method: 'DELETE',
       url: '/aaa/123',
@@ -409,14 +334,13 @@ describe('with httpMocks', () => {
       done();
     });
 
-    const _this = this;
-    md.storeResponses(request, response, (error) => {
-      md.express(request, response, (error) => {
+    md.storeResponses(request, response, () => {
+      md.express(request, response, () => {
       });
     });
   });
 
-  it('delete /aaa/123 again', function (done) {
+  it('delete /aaa/123 again', (done) => {
     request = httpMocks.createRequest({
       method: 'DELETE',
       url: '/aaa/123',
@@ -437,14 +361,13 @@ describe('with httpMocks', () => {
       done();
     });
 
-    const _this = this;
-    md.storeResponses(request, response, (error) => {
-      md.express(request, response, (error) => {
+    md.storeResponses(request, response, () => {
+      md.express(request, response, () => {
       });
     });
   });
 
-  it('post /xxx', function (done) {
+  it('post /xxx', (done) => {
     request = httpMocks.createRequest({
       method: 'POST',
       url: '/xxx',
@@ -465,14 +388,13 @@ describe('with httpMocks', () => {
       done();
     });
 
-    const _this = this;
-    md.storeResponses(request, response, (error) => {
-      md.express(request, response, (error) => {
+    md.storeResponses(request, response, () => {
+      md.express(request, response, () => {
       });
     });
   });
 
-  it('no route', function (done) {
+  it('no route', (done) => {
     request = httpMocks.createRequest({
       method: 'GET',
       url: '/aaaBBB',
@@ -487,9 +409,8 @@ describe('with httpMocks', () => {
       done();
     });
 
-    const _this = this;
-    md.storeResponses(request, response, (error) => {
-      md.express(request, response, (error) => {
+    md.storeResponses(request, response, () => {
+      md.express(request, response, () => {
       });
     });
   });

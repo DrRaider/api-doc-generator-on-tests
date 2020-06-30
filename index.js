@@ -179,7 +179,7 @@ function updateMethodsData(methodsPath, req, res, chunk, options) {
     }
   }
 
-  if (res.hasHeader('content-type')) {
+  if (res._headers['content-type']) {
     const resCType = res.getHeader('content-type').match(/([^;]*(application|text)[^;]*)/);
     if (resCType && resCType[1]) {
       let result;

@@ -4,30 +4,22 @@
   "description": "Create markdown API documentation from Express",
   "main": "index.js",
   "scripts": {
-    "test": "node_modules/.bin/mocha"
+    "test": "./node_modules/jest/bin/jest.js --testTimeout 15000 --runInBand"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/DrRaider/express2md.git"
   },
-  "keywords": [
-    "markdown",
-    "md",
-    "creator",
-    "builder",
-    "API",
-    "express",
-    "REST"
-  ],
-  "author": "Dimitry Ivanov <2@ivanoff.org.ua> # curl -A cv ivanoff.org.ua",
+  "author": "DrRaider",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ivanoff/express2md/issues"
+    "url": "https://github.com/DrRaider/express2md/issues"
   },
   "homepage": "https://github.com/DrRaider/express2md",
   "devDependencies": {
     "body-parser": "^1.17.0",
     "coveralls": "^2.11.15",
+    "dotenv": "^8.2.0",
     "eslint": "^7.3.1",
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-plugin-import": "^2.22.0",
@@ -36,6 +28,7 @@
     "express": "^4.15.0",
     "istanbul": "^0.4.5",
     "jest": "^26.1.0",
+    "lodash": "^4.17.15",
     "node-mocks-http": "^1.6.1"
   },
   "dependencies": {
