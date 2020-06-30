@@ -1,6 +1,6 @@
 {
   "name": "api-doc-generator-on-tests",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Create markdown API documentation from Express while running your tests",
   "main": "index.js",
   "scripts": {

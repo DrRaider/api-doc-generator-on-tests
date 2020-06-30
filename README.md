@@ -1,14 +1,11 @@
+# Document your API while running your tests
+
 [![MIT License][license-image]][license-url]
 [![Build Status: Linux][travis-image]][travis-url]
 
-
-
-### Create API documentation from object or Express.js application
-
-
 ## Installation
-```npm i -S express2md```
 
+```yarn add api-doc-generator-on-tests```
 
 ## Create API documentation based on Express.js
 
@@ -16,55 +13,49 @@
 
 ```javascript
 var express = require('express');
-var Markdown = require('express2md');
+var Markdown = require('api-doc-generator-on-tests');
 
 var app = express();
 
-var md = new Markdown({ express: app });
+Markdown({
+      express: app,
+      path: '/api.md', // path to API API documentation
+      storeResponses: true, // store first response as example
+      guessAll: true, // make description quite pretty
+      title: 'docTitle',
+    });
 
 // regular app express workflow ( app.get, app.post, app.listen... etc )
 ```
 
-### Get created md
-
-```curl 127.0.0.1:3000/api.md```
-
-
-### Extended express example
-
-- [extended Express API example](docs/express_movies_api.md) - movies database API example ( GET, POST, DELETE methods; RAM data storage ). Result example as md: [Movies Database API documentation](docs/express_movies_api_result.md)
-
-### Simple example
+### Add doc generation on each route test
 
 ```javascript
-var express = require('express');
-var Markdown = require('express2md');
+before(async () => {
+    server = await createServer({ docTitle: 'Best API Ever' });
+  });
 
-var app = express();
-var md = new Markdown({ express: app });
+  after(async () => {
+    const documentation = await apiRequest.get('api.md');
+    await fs.writeFile(`${__dirname}/../../../documentation/best-api-ever.md`, documentation.text);
+    await closeServer(server);
+  });
 
-app.get('/movies', function (req, res) { res.send('List of all movies'); });
-app.post('/movies', function (req, res) { res.send('Add new movie'); });
-app.get('/movies/:id', function (req, res) { res.send('Get movie by id'); });
-app.delete('/movies/:id', function (req, res) { res.send('Delete movie by id'); });
-
-app.listen(3000, function () { console.log('Example app listening on port 3000!'); });
+// run your tests  
 ```
 
-```curl 127.0.0.1:3000/api.md```
-
-### Result
+### Result example
 
 <pre>
 # Methods
 
 ## Brief
- - [//api.md](#methods./api.md)
+ - [/api.md](#methods./api.md)
    - get
- - [//movies](#methods./movies)
+ - [/movies](#methods./movies)
    - get
    - post
- - [//movies/:id](#methods./movies/:id)
+ - [/movies/:id](#methods./movies/:id)
    - get
    - delete
 
@@ -80,86 +71,12 @@ Method | Description
 get | get /movies
 post | post /movies
 
-
 ## <a name="methods./movies/:id"></a> /movies/{id}
 Method | Description
 -------|------------
 get | get /movies/:id
 delete | delete /movies/:id
 ```
-
-## Create API documentation from object
-
-```javascript
-var Markdown = require('express2md');
-var md = new Markdown({
-  title: 'Testing',
-  baseUri: 'http://localhost:3000',
-  version: '3.1.0',
-});
-
-md.type('books', {
-  name: { type: 'string', required: true },
-  numberOfPages: { type: 'integer' },
-});
-
-md.methods('books', 'get', {
-  description: 'Get information about all books',
-  responses: {
-    200: { 'application/json': [{ name: 'one', author: { name: 'Art' } }] },
-    404: { 'application/json': { code: '120', message: 'Books not found' } },
-  },
-});
-
-md.generate(function (err, mdText) {
-  console.log(mdText);
-});
-</pre>
-
-
-### Result
-
-<pre>
-# Testing
-v3.1.0
-
-BaseUri: [http://localhost:3000](http://localhost:3000)
-
-# Types
-## <a name="types.books"></a> books
-
-```
-     {
-       "name": {
-         "type": "string",
-         "required": true
-       },
-       "numberOfPages": {
-         "type": "integer"
-       }
-     }
-```
-
-# Methods
-
-## Brief
- - [/books](#methods.books)
-   - [get](#methods.books.get)
-
-## <a name="methods.books"></a> /books
-Method | Description
--------|------------
-get | Get information about all books
-
-### <a name="methods.books.get"></a> get
-Get information about all books
-
-**Responses**
-
-code | type | example
------|------|--------
-200 |application/json | ```[{"name":"one", "author":{"name":"Art"}}]```
-404 |application/json | ```{"code":"120", "message":"Books not found"}```
 </pre>
 
 ## Options parameters
@@ -168,32 +85,23 @@ code | type | example
 var md = new Markdown(options);
 ```
 
- - **version** - version of API documentation ( default: 1.0 )
- - **express** - an Express application
- - **path** - path to get API API documentation ( default: /api.md )
- - **storeResponses** - store first response as example ( default: false )
- - **guessAll** - make description quite pretty ( default: false )
- - **title** - title of API in document
- - **baseUri** - URI of API in document
- - **versionAPI** - version of API in document
- - **templateFileName** - path to template
-
+- **express** - an Express application
+- **path** - path to get API API documentation ( default: /api.md )
+- **storeResponses** - store first response as example ( default: false )
+- **guessAll** - make description quite pretty ( default: false )
+- **title** - title of API in document
 
 ## Tests
 
-```npm test```
-
+```yarn test```
 
 ## Change Log
 
 [all changes](CHANGELOG.md)
 
-
 ## Created by
 
-Dimitry, 2@ivanoff.org.ua
-
-```curl -A cv ivanoff.org.ua```
+Nicolas SAILLY
 
 [license-image]: http://img.shields.io/badge/license-MIT-blue.svg?style=flat
 [license-url]: LICENSE
