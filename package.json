@@ -1,6 +1,6 @@
 {
   "name": "express2md",
-  "version": "1.0.3",
+  "version": "1.0.1",
   "description": "Create markdown API documentation from Express",
   "main": "index.js",
   "scripts": {
