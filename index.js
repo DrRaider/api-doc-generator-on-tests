@@ -265,6 +265,7 @@ function run(options) {
         && req.route
         && req.route.path !== apiPath
         && res.statusCode !== 404
+        && res.statusCode !== 500
       ) {
         methodsData[req.route.path] =
           updateMethodsData(methodsData[req.route.path], req, res, c, options);
