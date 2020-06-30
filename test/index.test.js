@@ -17,21 +17,21 @@ describe('testing with no validators', () => {
           email: { type: 'email' },
         },
       });
-      this.md.called('books', 'get', {
+      this.md.methods('books', 'get', {
         description: 'Get information about all books',
         responses: {
           200: { 'application/json': [{ name: 'one', author: { name: 'Bert' } }] },
           404: { 'application/json': { code: '120', message: 'Books was found' } },
         },
       });
-      this.md.called('books', 'get', {
+      this.md.methods('books', 'get', {
         description: 'Get information about all books',
         responses: {
           200: { 'application/json': [{ name: 'one', author: { name: 'Art' } }] },
           404: { 'application/json': { code: '120', message: 'Books not found' } },
         },
       });
-      this.md.called('echo', 'get');
+      this.md.methods('echo', 'get');
     });
 
     afterEach(() => {

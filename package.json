@@ -4,7 +4,8 @@
   "description": "Create markdown API documentation from Express",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/jest/bin/jest.js --testTimeout 15000 --runInBand"
+    "lint": "./node_modules/eslint/bin/eslint.js index.js ./test",
+    "test": "./node_modules/jest/bin/jest.js --testTimeout 15000 --runInBand --coverage && rm -rf ./coverage"
   },
   "repository": {
     "type": "git",
@@ -18,7 +19,6 @@
   "homepage": "https://github.com/DrRaider/express2md",
   "devDependencies": {
     "body-parser": "^1.17.0",
-    "coveralls": "^2.11.15",
     "dotenv": "^8.2.0",
     "eslint": "^7.3.1",
     "eslint-config-airbnb-base": "^14.2.0",
@@ -26,7 +26,6 @@
     "eslint-plugin-jest": "^23.17.1",
     "eslint-plugin-sonarjs": "^0.5.0",
     "express": "^4.15.0",
-    "istanbul": "^0.4.5",
     "jest": "^26.1.0",
     "lodash": "^4.17.15",
     "node-mocks-http": "^1.6.1"
