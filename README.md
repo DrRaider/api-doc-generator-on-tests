@@ -12,8 +12,6 @@
 
 ### Create API documentation from object or Express.js application
 
- v1.0.3
-
 
 ## Installation
 ```npm i -S express2md```
