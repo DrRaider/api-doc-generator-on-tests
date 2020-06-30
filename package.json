@@ -7,10 +7,7 @@
     "lint": "./node_modules/eslint/bin/eslint.js index.js ./test",
     "test": "./node_modules/jest/bin/jest.js --testTimeout 15000 --runInBand --coverage && rm -rf ./coverage"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/DrRaider/express2md.git"
-  },
+  "repository": "github:DrRaider/express2md",
   "author": "DrRaider",
   "license": "MIT",
   "bugs": {
