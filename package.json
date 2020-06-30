@@ -1,7 +1,7 @@
 {
-  "name": "express2md",
-  "version": "1.0.3",
-  "description": "Create markdown API documentation from Express",
+  "name": "api-doc-generator-on-tests",
+  "version": "1.0.4",
+  "description": "Create markdown API documentation from Express while running your tests",
   "main": "index.js",
   "scripts": {
     "lint": "./node_modules/eslint/bin/eslint.js index.js ./test",

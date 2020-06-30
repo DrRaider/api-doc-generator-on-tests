@@ -1,14 +1,7 @@
-
-[![NPM version][npm-version-image]][npm-url]
-[![NPM downloads][npm-downloads-image]][npm-url]
 [![MIT License][license-image]][license-url]
-[![js-standard-style][standard-style-image]][standard-style-url]
 [![Build Status: Linux][travis-image]][travis-url]
-[![Build Status: Windows][appveyor-image]][appveyor-url]
-[![Coverage Status][coveralls-image]][coveralls-url]
 
 
-# express2md
 
 ### Create API documentation from object or Express.js application
 
@@ -202,22 +195,8 @@ Dimitry, 2@ivanoff.org.ua
 
 ```curl -A cv ivanoff.org.ua```
 
-
 [license-image]: http://img.shields.io/badge/license-MIT-blue.svg?style=flat
 [license-url]: LICENSE
 
-[standard-style-image]: https://img.shields.io/badge/code%20style-airbnb-blue.svg?style=flat
-[standard-style-url]: https://github.com/airbnb/javascript
-
-[npm-url]: https://npmjs.org/package/express2md
-[npm-version-image]: http://img.shields.io/npm/v/express2md.svg?style=flat
-[npm-downloads-image]: http://img.shields.io/npm/dm/express2md.svg?style=flat
-
-[travis-url]: https://travis-ci.org/ivanoff/express2md
-[travis-image]: https://travis-ci.org/ivanoff/express2md.svg?branch=master
-
-[appveyor-url]: https://ci.appveyor.com/project/ivanoff/express2md/branch/master
-[appveyor-image]: https://ci.appveyor.com/api/projects/status/lp3nhnam1eyyqh33/branch/master?svg=true
-
-[coveralls-url]: https://coveralls.io/github/ivanoff/express2md
-[coveralls-image]: https://coveralls.io/repos/github/ivanoff/express2md/badge.svg
+[travis-url]: https://travis-ci.org/DrRaider/express2md
+[travis-image]: https://travis-ci.org/DrRaider/express2md.svg?branch=master
