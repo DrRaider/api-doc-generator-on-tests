@@ -2,85 +2,79 @@
 # {{ options.title }}
 {%- endif %}
 
-{%- if options.version %}
-v{{ options.version }}
-{%- endif %}
-
-{%- if options.baseUri %}
-
-BaseUri: [{{ options.baseUri }}]({{ options.baseUri }})
-{%- endif %}
-
-{%- if types and f.stringify(types) != '{}' %}
-
-# Types
-
-{%- for name, object in types %}
-## <a name="types.{{ name }}"></a> {{ name }}
-
-```
-{{ f.stringify(object, null, '  ', 6) | safe }}
-```
-{%- endfor %}
-{%- endif %}
-
-# Methods
-
 ## Brief
 
 {%- for u in url %}
  - [{{ u }}](#methods.{{ u }})
-{%- for method, object in methods[u].data %}
-{%- if object.body or object.responses %}
+  {%- for method, object in methods[u].data %}
+    {%- if object.body or object.responses %}
    - [{{ method }}](#methods.{{ u }}.{{ method }})
-{%- else %}
+    {%- else %}
    - {{ method }}
-{%- endif %}
-
-{%- endfor -%}
+    {%- endif %}
+  {%- endfor -%}
 {%- endfor -%}
 
 {%- macro urlBlock(url, methods) %}
-
+  
 ## <a name="methods.{{ url }}"></a> {{ f.updatePath(url) }}
 Method | Description
--------|------------
+-------|--------
   {%- for method, object in methods %}
 {{ method }} | {{ object.description }}
   {%- endfor %}
 
   {%- for method, object in methods %}
-
-  {%- if ( object.body or object.responses ) %}
-
+    {%- if ( object.body or object.responses ) %}
+  
+***
+  
 ### <a name="methods.{{ url }}.{{ method }}"></a> {{ method }}
-{{ object.description }}
-  {%- endif %}
+>{{ object.description }}
+    {%- endif %}
 
-  {%- if object.body %}
+    {%- if object.body %}
+#### Body  
+      {%- for type, body in object.body %}
+<details>
+  <summary>Expand</summary>
+    
+##### Type
+`{{ type }}`
+        {%- if body.example %}
+##### Example  
+```json  
+{{ f.regReplace( f.stringify(body.example), ',', ', ', 'g' ) | safe }}
+```  
+        {%- endif %}
+      {%- endfor %}
+    {%- endif %}
 
-**Body**
+    {%- if object.responses %}
+</details>
 
-type | body | example
------|------|--------
-    {%- for type, body in object.body %}
-{{ type }} | [{{ body.type }}](#types.{{ body.type }}) | {{ f.regReplace( f.stringify(body.example), ',', ', ', 'g' ) | safe }}
-    {%- endfor %}
-  {%- endif %}
-
-  {%- if object.responses %}
-
-**Responses**
-
-code | type | example
------|------|--------
-    {%- for code, responses in object.responses %}
-{{ code }} |
-        {%- for type, example in responses -%}
-{{ type }} | ```{{- f.regReplace( f.stringify(example), ',', ', ', 'g' ) | safe }}```
+#### Responses  
+<details>
+  <summary>Expand</summary>
+      {%- for code, responses in object.responses %}
+    
+##### Code
+`{{ code }}`
+        {%- for type, example in responses %}
+##### Type
+`{{ type }}`
+          {%- if example %}
+##### Example  
+```json  
+{{ f.regReplace( f.stringify(example), ',', ', ', 'g' ) | safe }}
+```  
+***
+          {%- endif %}
         {%- endfor %}
-    {%- endfor %}
-  {%- endif %}
+      {%- endfor %}
+</details>
+
+    {%- endif %}
   {%- endfor %}
 {% endmacro %}
 
