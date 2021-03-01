@@ -26,51 +26,56 @@ Method | Description
 
   {%- for method, object in methods %}
     {%- if ( object.body or object.responses ) %}
-  
-***
-  
-### <a name="methods.{{ url }}.{{ method }}"></a> {{ method }}
+
+## <a name="methods.{{ url }}.{{ method }}"></a> {{ method }}
 >{{ object.description }}
     {%- endif %}
 
     {%- if object.body %}
-#### Body  
+### Body  
       {%- for type, body in object.body %}
 <details>
   <summary>Expand</summary>
     
-##### Type
+#### Type
 `{{ type }}`
         {%- if body.example %}
-##### Example  
+#### Example  
 ```json  
-{{ f.regReplace( f.stringify(body.example), ',', ', ', 'g' ) | safe }}
+{{ f.stringify(body.example, undefined, 2) | safe }}
 ```  
-        {%- endif %}
+          {%- endif %}
+  
+##   
+  
       {%- endfor %}
     {%- endif %}
 
     {%- if object.responses %}
 </details>
 
-#### Responses  
+***
+
+### Responses  
 <details>
   <summary>Expand</summary>
       {%- for code, responses in object.responses %}
     
-##### Code
+#### Code
 `{{ code }}`
         {%- for type, example in responses %}
-##### Type
+#### Type
 `{{ type }}`
           {%- if example %}
-##### Example  
+#### Example  
 ```json  
-{{ f.regReplace( f.stringify(example), ',', ', ', 'g' ) | safe }}
-```  
-***
-          {%- endif %}
-        {%- endfor %}
+{{ f.stringify(example, undefined, 2) | safe }}
+```   
+          {%- endif %} 
+        {%- endfor %}  
+  
+##
+   
       {%- endfor %}
 </details>
 

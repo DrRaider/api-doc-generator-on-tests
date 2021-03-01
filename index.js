@@ -23,10 +23,13 @@ const iterate = (obj) => {
     if (obj[key] && typeof obj[key] === 'string') {
       if (
         [
+          'id',
+          'email',
           'secret_key',
           'secrets',
           'secret',
           'token',
+          'token_hash',
           'secretKey',
           'template_url',
           'component_url',
@@ -156,50 +159,54 @@ function parseExpressData(options) {
 }
 
 function updateMethodsData(methodsPath, req, res, chunk, options) {
-  const r = req.route;
+  try {
+    const r = req.route;
 
-  if (undef(methodsPath)) methodsPath = {};
-  if (undef(methodsPath[r.stack[0].method])) {
-    methodsPath[r.stack[0].method] = {
-      description: guessDescription(r.stack[0].method, r.path, options.guessAll),
-    };
-  }
+    if (undef(methodsPath)) methodsPath = {};
+    if (undef(methodsPath[r.stack[0].method])) {
+      methodsPath[r.stack[0].method] = {
+        description: guessDescription(r.stack[0].method, r.path, options.guessAll),
+      };
+    }
 
-  const m = methodsPath[r.stack[0].method];
+    const m = methodsPath[r.stack[0].method];
 
-  if (req.headers['content-type']) {
-    const reqCType = req.headers['content-type'].match(/([^;]*(application|text)[^;]*)/);
-    if (reqCType && reqCType[1]) {
-      if (undef(m.body)) m.body = {};
-      if (undef(m.body[reqCType[1]])) {
-        m.body[reqCType[1]] = {
-          example: standardize(req.body),
-        };
+    if (req.headers['content-type']) {
+      const reqCType = req.headers['content-type'].match(/([^;]*(application|text)[^;]*)/);
+      if (reqCType && reqCType[1]) {
+        if (undef(m.body)) m.body = {};
+        if (undef(m.body[reqCType[1]])) {
+          m.body[reqCType[1]] = {
+            example: standardize(req.body),
+          };
+        }
       }
     }
-  }
 
-  if (res._headers['content-type']) {
-    const resCType = res.getHeader('content-type').match(/([^;]*(application|text)[^;]*)/);
-    if (resCType && resCType[1]) {
-      let result;
-      if (undef(chunk)) result = { file: 'file from a stream (no json response)' };
-      else result = chunk.toString();
+    if (res.statusCode === 204) {
       if (undef(m.responses)) m.responses = {};
       if (undef(m.responses[res.statusCode])) m.responses[res.statusCode] = {};
-      if (undef(m.responses[res.statusCode][resCType[1]])) {
-        if (resCType[1] === 'application/json') {
-          result = standardize(JSON.parse(result));
+      if (undef(m.responses[res.statusCode]['empty-response'])) m.responses[res.statusCode]['empty-response'] = null;
+    } else if (res._headers['content-type']) {
+      const resCType = res.getHeader('content-type').match(/([^;]*(application|text)[^;]*)/);
+      if (resCType && resCType[1]) {
+        let result;
+        if (undef(chunk)) result = { file: 'file from a stream (no json response)' };
+        else result = chunk.toString();
+        if (undef(m.responses)) m.responses = {};
+        if (undef(m.responses[res.statusCode])) m.responses[res.statusCode] = {};
+        if (undef(m.responses[res.statusCode][resCType[1]])) {
+          if (resCType[1] === 'application/json') {
+            result = standardize(JSON.parse(result));
+          }
+          m.responses[res.statusCode][resCType[1]] = result;
         }
-        m.responses[res.statusCode][resCType[1]] = result;
       }
-    }
-  } else if (res.statusCode === 204) {
-    if (undef(m.responses)) m.responses = {};
-    if (undef(m.responses[res.statusCode])) m.responses[res.statusCode] = {};
-    if (undef(m.responses[res.statusCode]['empty-response'])) m.responses[res.statusCode]['empty-response'] = null;
+    } 
+  } catch (e) {
+    console.error(e);
+    return methodsPath;
   }
-
   return methodsPath;
 }
 
